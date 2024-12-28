@@ -34,13 +34,13 @@
 3. Thực hiện tắt tường lửa (nếu tải file không bị lỗi có thể bỏ qua bước này):
 
     - Truy cập vào `Windows Security` trên Win.
-    ![install-and-active-staruml-1](./assets/img/install-and-active-staruml-1.png)
+    ![install-and-active-staruml-1](./tutorials/assets/img/install-and-active-staruml-1.png)
 
     - Ấn vào `Virus & Threat Protection`.
-    ![install-and-active-staruml-2](./assets/img/install-and-active-staruml-2.png)
+    ![install-and-active-staruml-2](./tutorials/assets/img/install-and-active-staruml-2.png)
 
     - Bỏ chọn `Real-time protection`.
-    ![install-and-active-staruml-3](./assets/img/install-and-active-staruml-3.png)
+    ![install-and-active-staruml-3](./tutorials/assets/img/install-and-active-staruml-3.png)
 
 4. Thực hiện copy file `app.asar` đã được tải từ bước 2 ghi đè file `app.asar` đã có trong resources của StarUML.
     - Window: `C:\Program Files\StarUML\resources`
@@ -52,7 +52,7 @@
 ---
 
 ## Hoàn thành cài đặt và active StarUML
-![Done](./assets/img/install-and-active-staruml-4.png)
+![Done](./tutorials/assets/img/install-and-active-staruml-4.png)
 
 - © Được soạn thảo bởi: [huynhkhuanit](https://github.com/huynhkhuanit)
 - © Nội dung `active` được thực hiện bởi: [K1ethoang](https://gist.github.com/K1ethoang).
