@@ -1,0 +1,58 @@
+Sơ đồ use case:
+	Overview Diagrams:
+		Tác nhân (Actor):
+			1. Sinh viên
+			2. Giảng viên
+			3. ADMIN
+	Các use case:
+		1. Sinh viên:
+			- Đăng nhập
+			- Đăng ký môn học
+				+ <<include>>:
+					- Hiển thị danh sách môn học học phần
+					- Thêm môn học vào danh sách đăng ký
+					- Xóa môn học khỏi danh sách đăng ký
+					- Xác nhận đăng ký môn học
+				+ <<extend>>:
+					- Hiển thị môn học học phần <<extend>> Thêm môn học vào danh sách đăng ký
+						+ Môn học trong học phần của sinh viên phải học phần thì mới thêm vào danh sách đăng ký môn học.
+			- Xem kết quả học tập
+			- Xem lịch học
+			- Thanh toán học phí
+		
+		2. Giảng viên:
+			- Nhập điểm sinh viên
+			- Cập nhật tình trạng học tập của sinh viên
+			- Xem danh sách lớp
+				- <<include>> xem thông tin sinh viên
+				- <<extend>>: Gửi thông báo đến sinh viên
+				- <<extend>>: Phê duyệt yêu cầu của sinh viên
+				- <<dependency>>: Quản lý nhóm học tập của sinh viên
+			- Cập nhật nhật điểm môn học
+			- Xem thống kê điểm
+		3. ADMIN:
+			- Quản lý học tập
+				- Quản lý đăng ký môn học
+					+ <<include>>:
+						- Tạo danh sách môn học học phần
+						- Hiển thị danh sách sinh viên đã đăng ký học phần
+						- Xác nhận trạng thái đăng ký môn học (trường hợp đặc biệt, ví dụ khi sinh viên yêu cầu)
+						- Thông báo trạng thái đăng ký (trường hợp lỗi hoặc vấn đề xảy ra trong quy trình đăng ký)
+						
+					+ <<extend>>:
+						- Thông báo trạng thái đăng ký (trường hợp lỗi hoặc vấn đề xảy ra trong quy trình đăng ký)
+							+) Thông báo trạng thái đăng ký (báo lỗi) thường xảy ra trong các tình huống như:
+								- Sinh viên thêm môn học nhưng:
+									- Môn học đã đầy (không còn chỗ trống).
+									- Sinh viên không đạt điều kiện tiên quyết.
+									- Sinh viên vượt quá số tín chỉ đăng ký cho phép.
+								- Sinh viên xóa môn học nhưng:
+									- Thao tác không hợp lệ (môn học không có trong danh sách đăng ký).
+									- Hạn cuối xóa môn đã hết.
+									
+		•	Xem danh sách sinh viên đã đăng ký
+		•	Đăng nhập
+		•	Quản lý giảng viên
+		•	Quản lý thông tin sinh viên
+		•	Quản lý tài chính
+		•	Báo cáo thống kê	
