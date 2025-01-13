@@ -4,21 +4,31 @@ Sơ đồ use case:
 			1. Sinh viên
 			2. Giảng viên
 			3. ADMIN
+			
+	---
+	
 	Các use case:
+		
+		---
+	
 		1. Sinh viên:
 			- Đăng nhập
 			- Đăng ký môn học
 				+ <<include>>:
-					- Hiển thị danh sách môn học học phần
-					- Thêm môn học vào danh sách đăng ký
-					- Xóa môn học khỏi danh sách đăng ký
-					- Xác nhận đăng ký môn học
+					- Hiển thị danh sách môn học học phần   (v)
+					- Thêm môn học vào danh sách đăng ký    (v)
+					- Xóa môn học khỏi danh sách đăng ký    (v)
+					- Xác nhận đăng ký môn học              (v)
 				+ <<extend>>:
 					- Hiển thị môn học học phần <<extend>> Thêm môn học vào danh sách đăng ký
 						+ Môn học trong học phần của sinh viên phải học phần thì mới thêm vào danh sách đăng ký môn học.
+					- Thêm môn học vào danh sách đăng ký <<extend>> Trạng thái đăng ký môn học [ADMIN].
+					- Xóa môn học khỏi danh sách đăng ký <<extend>> Trạng thái đăng ký môn học [ADMIN].
 			- Xem kết quả học tập
 			- Xem lịch học
 			- Thanh toán học phí
+			
+		---
 		
 		2. Giảng viên:
 			- Nhập điểm sinh viên
@@ -30,29 +40,79 @@ Sơ đồ use case:
 				- <<dependency>>: Quản lý nhóm học tập của sinh viên
 			- Cập nhật nhật điểm môn học
 			- Xem thống kê điểm
+		
+		---
+		
 		3. ADMIN:
 			- Quản lý học tập
 				- Quản lý đăng ký môn học
 					+ <<include>>:
 						- Tạo danh sách môn học học phần
 						- Hiển thị danh sách sinh viên đã đăng ký học phần
-						- Xác nhận trạng thái đăng ký môn học (trường hợp đặc biệt, ví dụ khi sinh viên yêu cầu)
-						- Thông báo trạng thái đăng ký (trường hợp lỗi hoặc vấn đề xảy ra trong quy trình đăng ký)
+						- Trạng thái đăng ký môn học (độc lập ra) -> mở hoặc đóng
+						- Thông báo trạng thái đăng ký (Đã [đăng ký thành công] hoặc [Đăng ký thất bại])
 						
 					+ <<extend>>:
-						- Thông báo trạng thái đăng ký (trường hợp lỗi hoặc vấn đề xảy ra trong quy trình đăng ký)
-							+) Thông báo trạng thái đăng ký (báo lỗi) thường xảy ra trong các tình huống như:
-								- Sinh viên thêm môn học nhưng:
-									- Môn học đã đầy (không còn chỗ trống).
-									- Sinh viên không đạt điều kiện tiên quyết.
-									- Sinh viên vượt quá số tín chỉ đăng ký cho phép.
-								- Sinh viên xóa môn học nhưng:
-									- Thao tác không hợp lệ (môn học không có trong danh sách đăng ký).
-									- Hạn cuối xóa môn đã hết.
-									
-		•	Xem danh sách sinh viên đã đăng ký
+						- Thông báo trạng thái đăng ký <<extend>> Xác nhận đăng ký môn học	
+							+) Sinh viên xác nhận đăng ký môn học thành công hoặc thất bại -> Gửi thông báo thành công hoặc thất bại.
+						- Hiển thị danh sách sinh viên đã đăng ký học phần <<extend>> Thông báo trạng thái đăng ký.
+							+) Trạng thái đăng ký của sinh viên thành công -> Danh sách tăng lên.
 		•	Đăng nhập
+		
+		---
+		
 		•	Quản lý giảng viên
+			- <<include>>:
+				+ Thêm giảng viên mới.
+				+ Xóa giảng viên.
+				+ Cập nhật thông tin giảng viên.
+				+ Xem danh sách giảng viên.
+				+ Xuất danh sách giảng viên.
+				+ Phân công giảng viên vào môn học.
+			- <<dependency>>:
+				+ Phân công giảng viên vào môn học <<dependency>> Xem danh sách giảng viên.
+				+ Phân công giảng viên vào môn học <<dependency>> Hiển thị danh sách môn học học phần [Sinh viên].
+				
+			- <<extend>>:
+				+ Xuất danh sách giảng viên <<extend>> Xem danh sách giảng viên.
+					-> ADMIN muốn xuất danh sách giảng viên thì phải xem danh sách giảng viên -> Sau đó thì có quyết định xuất danh sách ra hay không?
+				+ Cập nhật thông tin giảng viên <<extend>> Xem danh sách giảng viên.
+					-> Cập nhật thông tin giảng viên thì phải xem danh sách giảng viên HIỆN TẠI thì mới tiến hành cập nhật thông tin giảng viên được.
+		
+		---
+		
 		•	Quản lý thông tin sinh viên
+			- <<include>>:
+				+ Xem danh sách sinh viên.
+					- <<extend>>:
+						+ Xuất danh sách sinh viên (Condition: Xảy ra khi ADMIN yêu cầu xuất danh sách).
+						+ Lọc danh sách sinh viên (Condition: Khi ADMIN cần áp dụng bộ lọc cụ thể nào đó).
+				+ Thêm sinh viên.
+				+ Xóa sinh viên.
+					- <<extend>>:
+						+ Khôi phục sinh viên đã xóa (Condition: Xảy ra khi sinh viên tồn tại trong hệ thống sao lưu).
+				+ Cập nhật thông tin sinh viên.
+					- <<extend>>:
+						+ Khóa thông tin sinh viên (Condition: Khi phát hiện sinh viên phi phạm hoặc tạm thời chặn truy cập của sinh viên).
+				+ Tìm kiêm sinh viên.
+				+ Theo dõi trạng thái sinh viên.
+			
+			- <<extend>>:
+				+ [Xóa sinh viên] <<extend>> [Khôi phục sinh viên đã xóa].
+				+ [Xem danh sách sinh viên] <<extend>> [Xuất danh sách sinh viên].
+				+ [Xem danh sách sinh viên] <<extend>> [Lọc danh sách sinh viên].
+				+ [Cập nhật thông tin sinh viên] <<extend>> [Khóa thông tin sinh viên].
+				
+		---
+		
 		•	Quản lý tài chính
-		•	Báo cáo thống kê	
+			- <<include>>:
+				+ 
+				
+		---
+		
+		•	Báo cáo thống kê.
+			- <<include>>:
+				+ Tỷ lệ đậu / rớt của sinh viên trong một học phần.
+				+ Điểm trung bình học phần.
+				+ 
