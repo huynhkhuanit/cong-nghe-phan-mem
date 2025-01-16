@@ -13,6 +13,37 @@ Sơ đồ use case:
 	
 		1. Sinh viên:
 			- Đăng nhập
+				+ <<include>>:
+					- Xác thực tài khoản.
+					- Hiển thị thông báo lỗi đăng nhập.
+					- Chuyển hướng theo vai trò.
+						-> Xác nhận theo tài khoản ký tự đăng nhập.
+						
+				+ <<extend>>:
+					- Quên mật khẩu <<extend>> Xác thực tài khoản.
+						-> Khi người dùng không nhớ mật khẩu, họ có thể yêu cầu đặt lại thông qua quy trình khôi phục tài khoản.
+					- Đổi mật khẩu sau khi đăng nhập <<extend>> [Đăng nhập].
+						-> Các tài khoản mặt định khi được cung cấp bởi ADMIN với mật khẩu là mặc định, cần đổi mật khẩu khi lần đầu đăng nhập tránh thất thoát thông tin -> bảo mật thông tin.
+				
+				+ <<dependency>>:
+					- Quản lý tài khoản (ADMIN) <<dependency>> [ĐĂNG NHẬP].
+						-> Use Case [Đăng nhập] phụ thuộc vào việc quản lý tài khoản do ADMIN cấp phát.
+						Nếu tài khoản không được tạo hoặc bị khóa, người dùng không thể đăng nhập.
+						
+				+ Quy trình chính:
+					- Người dùng nhập tên đăng nhập và mật khẩu.
+					- Hệ thống thực hiện Xác thực tài khoản:
+						- Nếu hợp lệ:
+							+ Chuyển hướng người dùng theo vai trò:
+								= Sinh viên: Chuyển đến trang quản lý học tập cá nhân.
+								= Giảng viên: Chuyển đến trang nhập điểm, quản lý lớp.
+								= ADMIN: Chuyển đến bảng quản trị hệ thống.
+						- Nếu không hợp lệ:
+							+ Hiển thị thông báo lỗi.
+							+ Nếu người dùng yêu cầu:
+								= Quên mật khẩu: Hệ thống kích hoạt quy trình khôi phục tài khoản.
+								= Đổi mật khẩu: Được thực hiện sau đăng nhập thành công.
+				
 			- Đăng ký môn học
 				+ <<include>>:
 					- Hiển thị danh sách môn học học phần   (v)
@@ -24,23 +55,106 @@ Sơ đồ use case:
 						+ Môn học trong học phần của sinh viên phải học phần thì mới thêm vào danh sách đăng ký môn học.
 					- Thêm môn học vào danh sách đăng ký <<extend>> Trạng thái đăng ký môn học [ADMIN].
 					- Xóa môn học khỏi danh sách đăng ký <<extend>> Trạng thái đăng ký môn học [ADMIN].
+					
 			- Xem kết quả học tập
+				- <<include>>:
+					+ Xem kết quả học tập của học kỳ.
+					+ Thống kê điểm.
+					
+				- <<extend>>:
+					+ Xem kết quả học tập học kỳ <<extend>> Xem kết quả học tập của học kỳ.
+					+ So sánh kết quả học tập giữa các kỳ <<extend>> Thống kê điểm.
+				
+				- <<dependency>>:
+					+ Xem kết quả học tập học kỳ <<dependency>> Xác nhận đăng ký môn học.
+						-> Kết quả học tập phụ thuộc vào việc đăng ký và hoàn thành các môn học.
+					+ Xem kết quả học tập học kỳ <<dependency>> Xem danh sách môn học đã đăng ký.
+						-> Danh sách môn học cần thiết để hiển thị kết quả chi tiết.
+
 			- Xem lịch học
+				- <<include>>:
+					+ Xem danh sách môn học đã đăng ký.
+					+ Hiển thị thông tin giảng viên.
+					+ Hiển thị thông tin phòng học.
+				
+				- <<dependency>>:
+					+ Xác nhận đăng ký môn học [ĐĂNG KÝ MÔN HỌC] <<dependency>> Xem lịch học.
+				
+				- <<extend>>:
+					+ Xem lịch học hằng tuần / tháng <<extend>> Xem lịch học.
+					+ In lịch học <<extend>> Xem lịch học.
+				
+				
 			- Thanh toán học phí
-			
+				- <<include>>:
+					+ Xem học phí học kỳ.
+					+ Thanh toán học phí học kì.
+					+ Xem báo biểu học kỳ.
+					
+				- <<dependency>>:
+					+ Xác nhận đăng ký môn học <<dependency>> Xem học phí học kỳ (Vì "Xem học phí học kỳ" cần dữ liệu từ "Xác nhận đăng ký môn học").
+					+ Xem báo biểu học phí <<dependency>> (Vì "Xem báo biểu học phí" chỉ cần dữ liệu từ "Thanh toán học phí").
+					
+					
 		---
 		
 		2. Giảng viên:
-			- Nhập điểm sinh viên
-			- Cập nhật tình trạng học tập của sinh viên
-			- Xem danh sách lớp
-				- <<include>> xem thông tin sinh viên
-				- <<extend>>: Gửi thông báo đến sinh viên
-				- <<extend>>: Phê duyệt yêu cầu của sinh viên
-				- <<dependency>>: Quản lý nhóm học tập của sinh viên
-			- Cập nhật nhật điểm môn học
-			- Xem thống kê điểm
+			- Quản lý điểm số
+				- <<include>>:
+					+ Xem thông tin sinh viên.
+					+ Chọn môn học.
+					+ Nhập điểm cuối kỳ.
+					+ Nhập điểm giữa kỳ.
+					+ Lưu điểm vào hệ thống.
+				
+				- <<extend>>:
+					+ Cập nhật điểm đã nhập.
+					+ Thông báo điểm đến sinh viên.
+					
+				- <<dependency>>:
+					+ Quản lý học tập (ADMIN).
+					
+					
+			- Quản lý lớp học
+				- <<include>>:
+					+ Xem danh sách lớp.
+						- <<include>>:
+							+ Xem danh sách lớp --> <<include>> Xem thông tin sinh viên [ QUẢN LÝ ĐIỂM SỐ ]
+					+ Cập nhật thông tin lớp học.
+					
+				- <<extend>>:
+					+ Phê duyệt yêu cầu của sinh viên --> Xem danh sách lớp.
+						-> Khi [ GIẢNG VIÊN ] xem danh sách lớp thì có thể phê duyệt yêu cầu vào của sinh viên.
+					+ Gửi thông tin đến sinh viên --> Xem danh sách lớp.
+						-> Giảng viên có thể gửi thông tin về môn học, các thông báo khác đến sinh viên khi xem danh sách lớp về thông tin của sinh viên.
+				
+				- <<dependency>>:
+					+ Quản lý lớp học --> <<dependency>> Quản lý học tập.
+				
+			- Xem và phân tích kết quả học tập
+				- <<include>>:
+					+ Xem điểm theo lớp.
+					+ Thống kê tỷ lệ đậu rớt.
+					+ So sánh kết quả giữa các kỳ.
+					+ Xem điểm theo môn học.
+				
+				- <<extend>>:
+					+ Xuất báo cáo thống kê --> Xem và phân tích kết quả học tập.
+					+ Gửi thông báo về kết quả học tập --> Xem và phân tích kết quả học tập.
+	
+				- <<dependency>>:
+					+ Xem và phân tích kết quả học tập --> <<dependency>> Quản lý học tập.
+			
+			- Đăng nhập
+				- <<include>>:
+					+ Xác thực tài khoản.
+					+ Hiển thị thông báo lỗi đăng nhập.
+					+ Chuyển hướng theo vai trò.
 		
+				- <<extend>>:
+					+ Quên mật khẩu --> <<extend>> Xác thực tài khoản.
+					+ Đổi mật khẩu sau khi đăng nhập --> <<extend>> Đăng nhập.
+						-> Yêu cầu đổi mật khẩu sau đăng nhập lần đầu hoặc khi mật khẩu hết hạn.
 		---
 		
 		3. ADMIN:
@@ -57,62 +171,82 @@ Sơ đồ use case:
 							+) Sinh viên xác nhận đăng ký môn học thành công hoặc thất bại -> Gửi thông báo thành công hoặc thất bại.
 						- Hiển thị danh sách sinh viên đã đăng ký học phần <<extend>> Thông báo trạng thái đăng ký.
 							+) Trạng thái đăng ký của sinh viên thành công -> Danh sách tăng lên.
-		•	Đăng nhập
+			- Đăng nhập:
+				- <<include>>:
+					+ Xác thực tài khoản.
+					+ Chuyển hướng theo vai trò.
+					+ Quản lý tài khoản.
+				- <<extend>>:
+					+ Hiển thị thông báo lỗi đăng nhập - <<extend>> --> Đăng nhập.
+					+ Quên mật khẩu - <<extend>> --> Xác thực tài khoản.
+						-> Cần xác thực tài khoản khi người dùng ấn "Quên mật khẩu" vượt qua xác thực --> cho phép đổi mật khẩu.
+					+ Đổi mật khẩu sau khi đăng nhập - <<extend>> --> Đăng nhập.
+						-> Yêu cầu đổi mật khẩu sau đăng nhập lần đầu hoặc khi mật khẩu hết hạn.
 		
-		---
+			- Quản lý giảng viên
+				- <<include>>:
+					+ Thêm giảng viên mới.
+					+ Xóa giảng viên.
+					+ Cập nhật thông tin giảng viên.
+					+ Xem danh sách giảng viên.
+					+ Xuất danh sách giảng viên.
+					+ Phân công giảng viên vào môn học.
+				- <<dependency>>:
+					+ Phân công giảng viên vào môn học <<dependency>> Xem danh sách giảng viên.
+					+ Phân công giảng viên vào môn học <<dependency>> Hiển thị danh sách môn học học phần [Sinh viên].
+					
+				- <<extend>>:
+					+ Xuất danh sách giảng viên <<extend>> Xem danh sách giảng viên.
+						-> ADMIN muốn xuất danh sách giảng viên thì phải xem danh sách giảng viên -> Sau đó thì có quyết định xuất danh sách ra hay không?
+					+ Cập nhật thông tin giảng viên <<extend>> Xem danh sách giảng viên.
+						-> Cập nhật thông tin giảng viên thì phải xem danh sách giảng viên HIỆN TẠI thì mới tiến hành cập nhật thông tin giảng viên được.
 		
-		•	Quản lý giảng viên
-			- <<include>>:
-				+ Thêm giảng viên mới.
-				+ Xóa giảng viên.
-				+ Cập nhật thông tin giảng viên.
-				+ Xem danh sách giảng viên.
-				+ Xuất danh sách giảng viên.
-				+ Phân công giảng viên vào môn học.
-			- <<dependency>>:
-				+ Phân công giảng viên vào môn học <<dependency>> Xem danh sách giảng viên.
-				+ Phân công giảng viên vào môn học <<dependency>> Hiển thị danh sách môn học học phần [Sinh viên].
+			- Quản lý thông tin sinh viên
+				- <<include>>:
+					+ Xem danh sách sinh viên.
+						- <<extend>>:
+							+ Xuất danh sách sinh viên (Condition: Xảy ra khi ADMIN yêu cầu xuất danh sách).
+							+ Lọc danh sách sinh viên (Condition: Khi ADMIN cần áp dụng bộ lọc cụ thể nào đó).
+					+ Thêm sinh viên.
+					+ Xóa sinh viên.
+						- <<extend>>:
+							+ Khôi phục sinh viên đã xóa (Condition: Xảy ra khi sinh viên tồn tại trong hệ thống sao lưu).
+					+ Cập nhật thông tin sinh viên.
+						- <<extend>>:
+							+ Khóa thông tin sinh viên (Condition: Khi phát hiện sinh viên phi phạm hoặc tạm thời chặn truy cập của sinh viên).
+					+ Tìm kiêm sinh viên.
+					+ Theo dõi trạng thái sinh viên.
 				
-			- <<extend>>:
-				+ Xuất danh sách giảng viên <<extend>> Xem danh sách giảng viên.
-					-> ADMIN muốn xuất danh sách giảng viên thì phải xem danh sách giảng viên -> Sau đó thì có quyết định xuất danh sách ra hay không?
-				+ Cập nhật thông tin giảng viên <<extend>> Xem danh sách giảng viên.
-					-> Cập nhật thông tin giảng viên thì phải xem danh sách giảng viên HIỆN TẠI thì mới tiến hành cập nhật thông tin giảng viên được.
-		
-		---
-		
-		•	Quản lý thông tin sinh viên
-			- <<include>>:
-				+ Xem danh sách sinh viên.
-					- <<extend>>:
-						+ Xuất danh sách sinh viên (Condition: Xảy ra khi ADMIN yêu cầu xuất danh sách).
-						+ Lọc danh sách sinh viên (Condition: Khi ADMIN cần áp dụng bộ lọc cụ thể nào đó).
-				+ Thêm sinh viên.
-				+ Xóa sinh viên.
-					- <<extend>>:
-						+ Khôi phục sinh viên đã xóa (Condition: Xảy ra khi sinh viên tồn tại trong hệ thống sao lưu).
-				+ Cập nhật thông tin sinh viên.
-					- <<extend>>:
-						+ Khóa thông tin sinh viên (Condition: Khi phát hiện sinh viên phi phạm hoặc tạm thời chặn truy cập của sinh viên).
-				+ Tìm kiêm sinh viên.
-				+ Theo dõi trạng thái sinh viên.
-			
-			- <<extend>>:
-				+ [Xóa sinh viên] <<extend>> [Khôi phục sinh viên đã xóa].
-				+ [Xem danh sách sinh viên] <<extend>> [Xuất danh sách sinh viên].
-				+ [Xem danh sách sinh viên] <<extend>> [Lọc danh sách sinh viên].
-				+ [Cập nhật thông tin sinh viên] <<extend>> [Khóa thông tin sinh viên].
+				- <<extend>>:
+					+ [Xóa sinh viên] <<extend>> [Khôi phục sinh viên đã xóa].
+					+ [Xem danh sách sinh viên] <<extend>> [Xuất danh sách sinh viên].
+					+ [Xem danh sách sinh viên] <<extend>> [Lọc danh sách sinh viên].
+					+ [Cập nhật thông tin sinh viên] <<extend>> [Khóa thông tin sinh viên].
+	
+			- Quản lý tài chính
+				- <<include>>:
+					+ Xem thông tin học phí sinh viên.
+					+ Xem lịch sử thanh toán học phí.
+					+ Cập nhật học học phí sinh viên.
+					+ Quản lý các khoản phí khác.
+					+ Xuất báo cáo tài chính.
 				
-		---
+				- <<extend>>:
+					+ Xoá nợ học phí <<extend>> --> Cập nhật học phí sinh viên.
+					+ Gửi thông báo nhắc nhở thanh toán <<extend>> --> Xem lịch sử thanh toán học phí.
+						-> Gửi email hoặc thông báo đến sinh viên khi phát hiện chưa hoàn thành thanh toán.
+					+ Khóa tài khoản do chưa thanh toán <<extend>> --> Xem thông tin học phí sinh viên.
+						+ Trong trường hợp sinh viên chưa hoàn thành học phí sau thời hạn quy định, tài khoản có thể bị khóa tạm thời.
 		
-		•	Quản lý tài chính
-			- <<include>>:
-				+ 
-				
-		---
-		
-		•	Báo cáo thống kê.
-			- <<include>>:
-				+ Tỷ lệ đậu / rớt của sinh viên trong một học phần.
-				+ Điểm trung bình học phần.
-				+ 
+			- Báo cáo thống kê.
+				- <<include>>:
+					+ Tỷ lệ đậu / rớt trong học phần.
+					+ Điểm trung bình học phần.
+					+ Thống kê theo giảng viên.
+					+ Thống kê tình trạng học phí sinh viên.
+					+ Xuất báo cáo thống kê.
+					
+				- <<extend>>:
+					+ Thống kê chi tiết theo từng học kỳ --> Tỷ lệ đậu/rớt trong học phần.
+					+ So sánh thống kê giữa các kỳ --> Điểm trung bình học phần.
+					+ Phân tích tài chính --> Thống kê tình trạng học phí sinh viên
