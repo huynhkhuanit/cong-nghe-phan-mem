@@ -1,0 +1,130 @@
+1. class UML
+	- AbstractUser (Abstract class)
+		- Property:
+			+ id : String
+			+ name : String
+			+ email : String
+			+ matKhau : String
+			+ loaiTaiKhoan : String
+			+ trangThai : Boolean
+		- Method:
+			+ dangNhap()
+			+ dangXuat()
+			+ doiMatKhau()
+			+ capNhatThongTin()
+	
+	---
+	
+	- Sinh viên (Kế thừa user)
+		- Property:
+			+ maSinhVien : String.
+			+ nganhHoc : String.
+			+ trangThaiHocTap : String.
+			+ danhSachMonHoc: List<Course>
+			+ hocPhi: Tuition
+		- Method:
+			+ dangKyMonHoc(Course)
+			+ danhSachDangKy(Course)
+			+ xemDiem()
+			+ xemHocPhi()
+			+ thanhToanHocPhi()
+			+ xemLichHoc()
+			+ nhanThongBao()
+			
+	---
+	
+	- Giảng viên (Kế thừa User)
+		- Property:
+			+ maGiangVien : String
+			+ boMon: String
+			+ trinhDoChuyenMon: String
+			+ danhSachLopPhuTrach: List<lopHoc>
+		- Method:
+			+ quanLyDiem(SinhVien, Course, Float)
+				- Method con của quanLyDiem(SinhVien, Course, Float)
+				-> capNhatDiemGiuaKy(SinhVien, Float)
+				-> capNhatDiemCuoiKy(SinhVien, Float)
+			+ quanLyLopHoc(lopHoc)
+				-> xemDanhSachLop()
+			+ xemKetQuaHocTap(SinhVien)
+			+ guiThongBaoSinhVien(String)
+	
+	---
+	
+	- Admin (Kế thừa User)
+		- Property:
+			+ quyenHan: Enum {ToanQuyen, QuanLySinhVien, QuanLyGiangVien, QuanLyHocPhi}
+		- Method:
+			+ quanLyHocTap()
+			+ quanLyGiangVien()
+			+ quanLySinhVien()
+			+ quanLyTaiChinh()
+			+ thongKeBaoCao()
+			+ quanLyTaiKhoan(User)
+				-> capNhatThongTinNguoiDung(User)
+				-> moKhoaTaiKhoan(User)
+				-> khoaTaiKhoan(User)
+			
+2. Các lớp liên quan tới Môn Học
+	- Course
+		- Property
+			+ maMon: String
+			+ tenMon: String
+			+ soTinChi: Integer
+			+ giangVienPhuTrach: GiangVien
+			+ danhSachSinhVien : List<SinhVien>
+		- Method
+			+ themSinhVien(SinhVien)
+			+ xoaSinhVien(SinhVien)
+			+ capNhatDiem(SinhVien, Float)
+			+ hienThiThongTin()
+			
+			
+	- lopHoc (lớp lớp học)
+		- Property
+			+ maLop: String
+			+ danhSachSinhVien: List<SinhVien>
+			+ monHoc: Course
+			+ giangVienPhuTrach: GiangVien
+		- Method
+			+ themSinhVien(SinhVien)
+			+ xoaSinhVien(SinhVien)
+			+ capNhatThongTinLop()
+
+3. Lớp liên quan đến điểm số
+	- Transcript (lớp kết quả học tập)
+		- Property
+			+ sinhVien: SinhVien
+			+ monHoc: Course
+			+ diemGiuaKy: Float
+			+ diemCuoiKy: Float
+			+ diemTongKet: Float
+		- Method
+			+ tinhDiemTrungBinh()
+			+ xepLoaiHocTap()
+			+ xuatBangDiem()
+		
+4. Các lớp liên quan tới tài chính
+	- Tuition (lớp học phí)
+		- Property
+			+ sinhVien: SinhVien
+			+ hocKy : String
+			+ soTien: Float
+			+ trangThaiThanhToan: Enum {ChuaThanhToan, DaThanhToan, TreHan}
+		- Method
+			+ xacNhanThanhToan()
+			+ xemLichSuThanhToan()
+			+ guiThongBaoNoHocPhi()
+			
+5. Các lớp liên quan tới báo cáo & thống kê
+	- Report (lớp báo cáo & thống kê)
+		- Property
+			+ hocKy: String
+			+ soLuongSinhVien: Integer
+			+ tyLeDauRot: Float
+			+ tongDoanhThu: Float
+		- Method
+			+ xuatBaoCao()
+			+ soSanhGiuaCacKy()
+			+ thongKeHocPhi()
+			+ thongKeKetQuaHocTap()
